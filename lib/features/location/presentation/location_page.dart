@@ -52,7 +52,7 @@ class _LocationPageState extends State<LocationPage> {
                 width: MediaQuery.of(context).size.width - 16,
                 child: ItemBranch(
                   site: widget.site,
-                  iconPrimaryButton: SvgAsset.icMap,
+                  iconPrimaryButton: SvgAsset.icNavigation,
                   iconOutLineButton: SvgAsset.icCall,
                   onPhoneCall: (value) {
                     launchPhone(value);

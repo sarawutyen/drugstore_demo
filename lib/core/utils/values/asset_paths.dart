@@ -9,4 +9,5 @@ class SvgAsset {
   static const icMarkerRed = '$svgPath''ic_marker_red.svg';
   static const icMarker = '$svgPath''ic_marker.svg';
   static const icSearch = '$svgPath''ic_search.svg';
+  static const icNavigation = '$svgPath''ic_nevigation.svg';
 }
