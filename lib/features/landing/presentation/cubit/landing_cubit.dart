@@ -31,7 +31,12 @@ class LandingCubit extends Cubit<LandingState> {
       final String placeId = autoComplete!.predictions!.first.placeId ?? '';
       final placeDetail = await getIt<LandingRepo>().findPlaceDetail(placeId);
       emit(state.copyWith(
-          isLoading: false, currentAddress: placeDetail.data ?? PlaceDetail()));
+          isLoading: false,
+          currentLocation: LatLng(
+              placeDetail.data?.getLatitude ?? state.currentLocation.latitude,
+              placeDetail.data?.getLongitude ??
+                  state.currentLocation.longitude),
+          currentAddress: placeDetail.data ?? PlaceDetail()));
     } else {
       emit(state.copyWith(isLoading: false, currentAddress: PlaceDetail()));
     }
