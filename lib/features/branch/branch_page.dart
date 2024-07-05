@@ -1,7 +1,8 @@
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/text_styles.dart';
-import 'package:drugstore_demo/features/widgets/app_item_branch.dart';
+import 'package:drugstore_demo/features/widgets/item_branch.dart';
 import 'package:drugstore_demo/features/widgets/app_search_field.dart';
+import 'package:drugstore_demo/routes/pages.dart';
 import 'package:flutter/material.dart';
 
 class BranchPage extends StatefulWidget {
@@ -29,10 +30,17 @@ class _BranchPageState extends State<BranchPage> {
         ),
         Expanded(
           child: ListView.builder(
-              itemCount: 30,
-              itemBuilder: (context, index) => const ListTile(
-                    title: AppItemBranch(iconPrimaryButton: SvgAsset.icMap, iconOutLineButton: SvgAsset.icCall,),
-                  )),
+            itemCount: 30,
+            itemBuilder: (context, index) => ItemBranch(
+              iconPrimaryButton: SvgAsset.icMap,
+              iconOutLineButton: SvgAsset.icCall,
+              onPhoneCall: (value) {},
+              onNavigateMap: (value) {
+                Navigator.of(context)
+                    .pushNamed(Routes.location, arguments: value);
+              },
+            ),
+          ),
         )
       ]),
     );

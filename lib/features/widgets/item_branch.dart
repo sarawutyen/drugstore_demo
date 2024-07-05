@@ -6,10 +6,11 @@ import 'package:drugstore_demo/features/widgets/app_primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class AppItemBranch extends StatelessWidget {
-  const AppItemBranch({
+class ItemBranch extends StatelessWidget {
+  const ItemBranch({
     super.key,
     this.onPhoneCall,
+    this.onNavigateMap,
     this.textPrimaryButton,
     this.textOutLineButton,
     this.iconPrimaryButton,
@@ -17,6 +18,7 @@ class AppItemBranch extends StatelessWidget {
   });
 
   final Function(String)? onPhoneCall;
+  final Function(String)? onNavigateMap;
   final String? textPrimaryButton;
   final String? textOutLineButton;
   final String? iconPrimaryButton;
@@ -25,6 +27,7 @@ class AppItemBranch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.all(8),
       child: _buildsBranchItem(),
     );
   }
@@ -59,31 +62,42 @@ class AppItemBranch extends StatelessWidget {
           const SizedBox(
             height: 16.0,
           ),
-          _buildButton(),
+          _buildButton(
+            onNavigateMap: onNavigateMap,
+            onPhoneCall: onPhoneCall,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildButton() {
+  Widget _buildButton(
+      {required Function(String)? onPhoneCall,
+      required Function(String)? onNavigateMap}) {
     return Row(
       children: [
         Expanded(
+          flex: 3,
             child: AppOutlineButton(
           text: '02-538-2229 ต่อ 54',
           icon: iconOutLineButton,
           textStyle: TextStyleConstants.textOutline10w500,
-          onPressed: () {},
+          onPressed: () {
+            onPhoneCall?.call('aaaa');
+          },
         )),
         const SizedBox(
           width: 16.0,
         ),
         Expanded(
+          flex: 3,
             child: AppPrimaryButton(
           text: 'แผนที่สาขา',
           icon: iconPrimaryButton,
           textStyle: TextStyleConstants.textPrimary10w500,
-          onPressed: () {},
+          onPressed: (){
+            onNavigateMap?.call('Test na ja');
+          },
         )),
       ],
     );

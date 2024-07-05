@@ -42,7 +42,7 @@ class _LandingPageState extends State<LandingPage> {
         ],
         child: Stack(
           children: [
-            const MapWidget(),
+            const MapWidget(showMyCurrentButton: true,),
             AppSearchField(
               onSubmitted: (value) {},
               hintText: 'ค้นหาที่อยู่จัดส่งสินค้า',

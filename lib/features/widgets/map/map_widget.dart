@@ -7,7 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({super.key});
+  const MapWidget({super.key, required this.showMyCurrentButton});
+  final bool showMyCurrentButton;
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -40,7 +41,7 @@ class _MapWidgetState extends State<MapWidget> {
                 _mapCubit.setMapController(mapController: googleMapController);
               },
             ),
-            _buildMyCurrentLocation(),
+            if (widget.showMyCurrentButton) _buildMyCurrentLocation(),
           ],
         );
       },
