@@ -15,6 +15,21 @@ void launchPhone(String phoneNumber) async {
   }
 }
 
+void launchGoogleMaps(double originLat, double originLng, double destLat, double destLng) async {
+    String origin = '$originLat,$originLng'; // Origin coordinates (lat,lng)
+    String destination = '$destLat,$destLng'; // Destination coordinates (lat,lng)
+
+    // Construct the URL to launch Google Maps
+    final url = 'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination';
+
+    // Check if the URL can be launched
+    if (await canLaunch(url)) {
+      await launch(url); // Launch Google Maps
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 bool checkIfSiteIsOpen(String openTime, String closeTime) {
   TimeOfDay currentTime = TimeOfDay.now();
   TimeOfDay open = _parseTime(openTime);

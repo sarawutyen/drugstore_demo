@@ -34,8 +34,9 @@ class _LocationPageState extends State<LocationPage> {
       body: Stack(
         alignment: AlignmentDirectional.center,
         children: [
-         MapWidget(
-            currentLocation: LatLng(widget.site.location.coordinates.last, widget.site.location.coordinates.first),
+          MapWidget(
+            currentLocation: LatLng(widget.site.location.coordinates.last,
+                widget.site.location.coordinates.first),
             autoSetCurrentLocation: false,
             showMyCurrentButton: false,
           ),
@@ -56,7 +57,16 @@ class _LocationPageState extends State<LocationPage> {
                   onPhoneCall: (value) {
                     launchPhone(value);
                   },
-                  onNavigateMap: (value) {},
+                  onNavigateMap: (Site value) {
+                    final currentLocation =
+                        getIt<LandingCubit>().state.currentLocation;
+                    launchGoogleMaps(
+                      currentLocation.latitude,
+                      currentLocation.longitude,
+                      value.location.coordinates.last,
+                      value.location.coordinates.first,
+                    );
+                  },
                 )),
           )
         ],
