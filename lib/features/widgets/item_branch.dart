@@ -85,7 +85,7 @@ class ItemBranch extends StatelessWidget {
               text: site.siteTel,
               icon: iconOutLineButton,
               textStyle: TextStyleConstants.textOutline10w500,
-              onPressed: !site.isOpen
+              onPressed: site.isOpen
                   ? () {
                       onPhoneCall?.call(site.siteTel);
                     }
@@ -100,7 +100,7 @@ class ItemBranch extends StatelessWidget {
               text: 'แผนที่สาขา',
               icon: iconPrimaryButton,
               textStyle: TextStyleConstants.textPrimary10w500,
-              onPressed: !site.isOpen
+              onPressed: site.isOpen
                   ? () {
                       onNavigateMap?.call(site);
                     }
