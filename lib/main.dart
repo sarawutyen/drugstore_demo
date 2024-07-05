@@ -1,5 +1,5 @@
 import 'package:drugstore_demo/core/utils/values/colors.dart';
-import 'package:drugstore_demo/features/landing/landing_page.dart';
+import 'package:drugstore_demo/features/landing/presentation/landing_page.dart';
 import 'package:drugstore_demo/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'core/getit_config.dart';

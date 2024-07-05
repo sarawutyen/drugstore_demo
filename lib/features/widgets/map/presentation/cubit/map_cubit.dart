@@ -13,25 +13,12 @@ class MapCubit extends Cubit<MapState> {
               100.523186,
             )));
 
-  Future<void> loadInitialData() async {
-    final stableState = state;
-    try {
-      emit(state.copyWith(isLoading: true));
-      emit(state.copyWith(isLoading: false));
-    } catch (error) {
-      emit(state.copyWith(error: error.toString()));
-      emit(stableState.copyWith(isLoading: false));
-    }
-  }
-
   void setMapController({required GoogleMapController mapController}) {
     emit(state.copyWith(mapController: mapController));
   }
 
   void updateCurrentLocation(LatLng current,
-      {bool autoZoom = false, bool showMarker = false}) {
-    emit(state.copyWith(currentLocation: current));
-
+      {bool autoZoom = false, bool showMarker = false}) async {
     if (showMarker) {
       clearMarker();
       setMarker(latLng: current);
@@ -41,10 +28,11 @@ class MapCubit extends Cubit<MapState> {
       state.mapController?.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(target: current, zoom: 14)));
     }
+    emit(state.copyWith(isLoading: false, currentLocation: current));
   }
 
-  void zoomTo({double zoonLevel = defaultZoomLevel}) {
-    state.mapController?.animateCamera(CameraUpdate.zoomTo(zoonLevel));
+  void zoomTo({required  latLng,double zoomLevel = defaultZoomLevel}) {
+    state.mapController?.animateCamera(CameraUpdate.newLatLngZoom(latLng, zoomLevel));
   }
 
   void setMarker({required LatLng latLng}) {

@@ -2,11 +2,11 @@ import 'package:drugstore_demo/core/getit_config.dart';
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:drugstore_demo/core/utils/values/text_styles.dart';
+import 'package:drugstore_demo/features/landing/presentation/cubit/landing_cubit.dart';
 import 'package:drugstore_demo/features/widgets/item_branch.dart';
-import 'package:drugstore_demo/features/widgets/map/cubit/map_cubit.dart';
-import 'package:drugstore_demo/features/widgets/map/map_widget.dart';
+import 'package:drugstore_demo/features/widgets/map/presentation/map_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationPage extends StatefulWidget {
   const LocationPage({super.key, required this.title});
@@ -28,33 +28,32 @@ class _LocationPageState extends State<LocationPage> {
           style: TextStyleConstants.appBar,
         ),
       ),
-      body: BlocProvider(
-        create: (context) => getIt<MapCubit>(),
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: [
-            const MapWidget(
-              showMyCurrentButton: false,
-            ),
-            Positioned(
-              top: 20,
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 16,
-                  child: _buildAddressDetail()),
-            ),
-            Positioned(
-              bottom: 30,
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 16,
-                  child: ItemBranch(
-                    iconPrimaryButton: SvgAsset.icMap,
-                    iconOutLineButton: SvgAsset.icCall,
-                    onPhoneCall: (value) {},
-                    onNavigateMap: (value) {},
-                  )),
-            )
-          ],
-        ),
+      body: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          const MapWidget(
+            currentLocation: LatLng(13.789233,100.558942),
+            autoSetCurrentLocation: false,
+            showMyCurrentButton: false,
+          ),
+          Positioned(
+            top: 20,
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width - 16,
+                child: _buildAddressDetail()),
+          ),
+          Positioned(
+            bottom: 30,
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width - 16,
+                child: ItemBranch(
+                  iconPrimaryButton: SvgAsset.icMap,
+                  iconOutLineButton: SvgAsset.icCall,
+                  onPhoneCall: (value) {},
+                  onNavigateMap: (value) {},
+                )),
+          )
+        ],
       ),
     );
   }
@@ -94,7 +93,12 @@ class _LocationPageState extends State<LocationPage> {
             height: 8.0,
           ),
           Text(
-            '62,64 ซอยองครักษ์ แขวงถนนนครไชยศรี เขตดุสิต กรุงเทพฯ 10300',
+            getIt<LandingCubit>()
+                    .state
+                    .currentAddress
+                    ?.result
+                    ?.formattedAddress ??
+                '-',
             maxLines: 2,
             style: TextStyleConstants.textStyle13w400
                 .copyWith(color: ColorsConstant.grey6B6B6B),

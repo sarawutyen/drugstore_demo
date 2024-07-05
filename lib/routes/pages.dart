@@ -1,5 +1,5 @@
 import 'package:drugstore_demo/features/branch/branch_page.dart';
-import 'package:drugstore_demo/features/landing/landing_page.dart';
+import 'package:drugstore_demo/features/landing/presentation/landing_page.dart';
 import 'package:drugstore_demo/features/location/location_page.dart';
 import 'package:flutter/material.dart';
 

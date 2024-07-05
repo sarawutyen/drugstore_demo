@@ -2,15 +2,15 @@ import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:drugstore_demo/core/utils/values/text_styles.dart';
 import 'package:drugstore_demo/core/getit_config.dart';
-import 'package:drugstore_demo/features/landing/cubit/landing_cubit.dart';
+import 'package:drugstore_demo/features/landing/presentation/cubit/landing_cubit.dart';
 import 'package:drugstore_demo/features/widgets/app_primary_button.dart';
-import 'package:drugstore_demo/features/widgets/map/cubit/map_cubit.dart';
-import 'package:drugstore_demo/features/widgets/map/map_widget.dart';
+import 'package:drugstore_demo/features/widgets/map/presentation/map_widget.dart';
 import 'package:drugstore_demo/features/widgets/app_search_field.dart';
 import 'package:drugstore_demo/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -31,26 +31,38 @@ class _LandingPageState extends State<LandingPage> {
           style: TextStyleConstants.appBar,
         ),
       ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => getIt<MapCubit>(),
-          ),
-          BlocProvider(
-            create: (context) => getIt<LandingCubit>(),
-          ),
-        ],
+      body: BlocProvider(
+        create: (context) => getIt<LandingCubit>(),
         child: Stack(
           children: [
-            const MapWidget(showMyCurrentButton: true,),
-            AppSearchField(
-              onSubmitted: (value) {},
-              hintText: 'ค้นหาที่อยู่จัดส่งสินค้า',
+            const MapWidget(
+              showMyCurrentButton: true,
+            ),
+            BlocBuilder<LandingCubit, LandingState>(
+              builder: (context, state) {
+                return AppSearchField(
+                  enabled: !state.isLoading,
+                  onSubmitted: (value) {
+                    getIt<LandingCubit>().findLocation(value: value);
+                  },
+                  hintText: 'ค้นหาที่อยู่จัดส่งสินค้า',
+                );
+              },
             ),
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomWidget(),
+      bottomNavigationBar: BlocProvider(
+        create: (context) => getIt<LandingCubit>(),
+        child: BlocBuilder<LandingCubit, LandingState>(
+          builder: (context, state) {
+            return Skeletonizer(
+              enabled: state.isLoading,
+              child: _buildBottomWidget(),
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -66,9 +78,11 @@ class _LandingPageState extends State<LandingPage> {
           margin: const EdgeInsets.only(bottom: 16.0, left: 8.0, right: 8.0),
           child: AppPrimaryButton(
             text: 'ยืนยันตำแหน่ง',
-            onPressed: () {
-              Navigator.of(context).pushNamed(Routes.branch);
-            },
+            onPressed: getIt<LandingCubit>().state.isLoading
+                ? null
+                : () {
+                    Navigator.of(context).pushNamed(Routes.branch);
+                  },
           ),
         )
       ],
@@ -99,9 +113,14 @@ class _LandingPageState extends State<LandingPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildAddressName(
-                  'ที่อยู่* (ตำบล, อำเภอ, จังหวัด, รหัสไปรษณีย์)'),
-              _buildAddressDetail(
-                  'ซอยวงศ์สว่าง1,บางซื่อ,เมืองนนทบุรี,นนทบุรี,11000,ประเทศไทยประเทศไทยประเทศไทยประเทศไทยประเทศไทย')
+                  getIt<LandingCubit>().state.currentAddress?.result?.name ??
+                      '-'),
+              _buildAddressDetail(getIt<LandingCubit>()
+                      .state
+                      .currentAddress
+                      ?.result
+                      ?.formattedAddress ??
+                  '-')
             ],
           )),
     );

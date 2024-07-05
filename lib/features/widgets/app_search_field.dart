@@ -1,13 +1,15 @@
+
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AppSearchField extends StatelessWidget {
-  const AppSearchField({super.key, this.onSubmitted, this.hintText});
+  const AppSearchField({super.key, this.onSubmitted, this.hintText, this.enabled = true});
 
   final Function(String)? onSubmitted;
   final String? hintText;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class AppSearchField extends StatelessWidget {
       margin: const EdgeInsets.only(
           top: 16.0, bottom: 16.0, left: 16.0, right: 16.0),
       child: TextField(
+        enabled: enabled,
         maxLines: 1,
         decoration: InputDecoration(
             fillColor: Colors.white,
@@ -31,7 +34,9 @@ class AppSearchField extends StatelessWidget {
                 borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
                 borderRadius: BorderRadius.all(Radius.circular(23.0))),
             enabledBorder: const OutlineInputBorder(
-              
+                borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                disabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             prefixIcon: Padding(

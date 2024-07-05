@@ -1,14 +1,21 @@
-import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:drugstore_demo/core/getit_config.dart';
-import 'package:drugstore_demo/features/widgets/map/cubit/map_cubit.dart';
+import 'package:drugstore_demo/core/utils/values/colors.dart';
+import 'package:drugstore_demo/features/landing/presentation/cubit/landing_cubit.dart';
+import 'package:drugstore_demo/features/widgets/map/presentation/cubit/map_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapWidget extends StatefulWidget {
-  const MapWidget({super.key, required this.showMyCurrentButton});
+  const MapWidget(
+      {super.key,
+      required this.showMyCurrentButton,
+      this.currentLocation,
+      this.autoSetCurrentLocation = true});
   final bool showMyCurrentButton;
+  final bool autoSetCurrentLocation;
+  final LatLng? currentLocation;
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -16,35 +23,46 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
-  final MapCubit _mapCubit = getIt<MapCubit>();
+  final MapCubit _mapCubit = MapCubit();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _getCurrentPosition();
+      if (widget.autoSetCurrentLocation) {
+        await _getCurrentPosition();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MapCubit, MapState>(
-      builder: (context, state) {
-        return Stack(
-          children: [
-            GoogleMap(
-              initialCameraPosition:
-                  CameraPosition(target: state.currentLocation),
-              markers: state.markers ?? {},
-              zoomControlsEnabled: false,
-              onMapCreated: (GoogleMapController googleMapController) {
-                _mapCubit.setMapController(mapController: googleMapController);
-              },
-            ),
-            if (widget.showMyCurrentButton) _buildMyCurrentLocation(),
-          ],
-        );
-      },
+    return BlocProvider(
+      create: (context) => _mapCubit,
+      child: BlocBuilder<MapCubit, MapState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              GoogleMap(
+                initialCameraPosition:
+                    CameraPosition(target: state.currentLocation),
+                markers: state.markers ?? {},
+                zoomControlsEnabled: false,
+                onMapCreated: (GoogleMapController googleMapController) {
+                  _mapCubit.setMapController(
+                      mapController: googleMapController);
+                  if (widget.currentLocation != null) {
+                    _mapCubit.setMarker(latLng: widget.currentLocation!);
+                    _mapCubit.zoomTo(
+                        latLng: widget.currentLocation!, zoomLevel: 15);
+                  }
+                },
+              ),
+              if (widget.showMyCurrentButton) _buildMyCurrentLocation(),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -73,7 +91,7 @@ class _MapWidgetState extends State<MapWidget> {
     final hasPermission = await _handlePermission();
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
+        .then((Position position) async {
       _mapCubit.updateCurrentLocation(
         LatLng(
           position.latitude,
@@ -82,6 +100,11 @@ class _MapWidgetState extends State<MapWidget> {
         autoZoom: true,
         showMarker: true,
       );
+      getIt<LandingCubit>().updateCurrentLocation(LatLng(
+        position.latitude,
+        position.longitude,
+      ));
+      await getIt<LandingCubit>().findGeocode();
     }).catchError((e) {
       debugPrint(e);
     });

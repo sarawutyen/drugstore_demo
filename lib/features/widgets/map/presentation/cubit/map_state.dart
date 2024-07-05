@@ -7,14 +7,15 @@ class MapState {
     required this.currentLocation,
     this.mapController,
     this.markers,
-    this.isLoading,
+    this.isLoading = false,
     this.error,
     this.zoomLevel,
   });
   LatLng currentLocation;
+
   GoogleMapController? mapController;
   Set<Marker>? markers;
-  bool? isLoading;
+  bool isLoading;
   int? zoomLevel = 0;
   String? error;
 
