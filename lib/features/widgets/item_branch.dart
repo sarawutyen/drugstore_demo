@@ -1,6 +1,7 @@
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:drugstore_demo/core/utils/values/text_styles.dart';
+import 'package:drugstore_demo/features/branch/data/models/site.dart';
 import 'package:drugstore_demo/features/widgets/app_out_line_button.dart';
 import 'package:drugstore_demo/features/widgets/app_primary_button.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 class ItemBranch extends StatelessWidget {
   const ItemBranch({
     super.key,
+    required this.site,
     this.onPhoneCall,
     this.onNavigateMap,
     this.textPrimaryButton,
@@ -18,7 +20,8 @@ class ItemBranch extends StatelessWidget {
   });
 
   final Function(String)? onPhoneCall;
-  final Function(String)? onNavigateMap;
+  final Function(Site)? onNavigateMap;
+  final Site site;
   final String? textPrimaryButton;
   final String? textOutLineButton;
   final String? iconPrimaryButton;
@@ -73,13 +76,13 @@ class ItemBranch extends StatelessWidget {
 
   Widget _buildButton(
       {required Function(String)? onPhoneCall,
-      required Function(String)? onNavigateMap}) {
+      required Function(Site)? onNavigateMap}) {
     return Row(
       children: [
         Expanded(
           flex: 3,
             child: AppOutlineButton(
-          text: '02-538-2229 ต่อ 54',
+          text: site.siteTel,
           icon: iconOutLineButton,
           textStyle: TextStyleConstants.textOutline10w500,
           onPressed: () {
@@ -96,7 +99,7 @@ class ItemBranch extends StatelessWidget {
           icon: iconPrimaryButton,
           textStyle: TextStyleConstants.textPrimary10w500,
           onPressed: (){
-            onNavigateMap?.call('Test na ja');
+            onNavigateMap?.call(site);
           },
         )),
       ],
@@ -136,18 +139,18 @@ class ItemBranch extends StatelessWidget {
             ],
           ),
         ),
-        const Expanded(
+        Expanded(
           flex: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'data',
+                site.siteDesc,
                 style: TextStyleConstants.textStyle13w700,
               ),
               Text(
-                'data',
+                '2222',
                 style: TextStyleConstants.textStyle13w700,
               ),
               Row(
@@ -161,7 +164,7 @@ class ItemBranch extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '(data)',
+                    '(${site.siteOpenTime}-${site.siteCloseTime})',
                     style: TextStyleConstants.textStyle13w700,
                   ),
                 ],

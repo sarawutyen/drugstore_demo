@@ -1,6 +1,7 @@
-import 'package:drugstore_demo/features/branch/branch_page.dart';
+import 'package:drugstore_demo/features/branch/data/models/site.dart';
+import 'package:drugstore_demo/features/branch/presentation/branch_page.dart';
 import 'package:drugstore_demo/features/landing/presentation/landing_page.dart';
-import 'package:drugstore_demo/features/location/location_page.dart';
+import 'package:drugstore_demo/features/location/presentation/location_page.dart';
 import 'package:flutter/material.dart';
 
 part './routes.dart';
@@ -16,10 +17,10 @@ abstract class AppPages {
       case Routes.branch:
         return MaterialPageRoute(builder: (context) => const BranchPage());
       case Routes.location:
-        String title = args as String;
+        Site site = args as Site;
         return MaterialPageRoute(
             builder: (context) => LocationPage(
-                  title: title,
+                  site: site,
                 ));
       default:
         return MaterialPageRoute(builder: (context) => const LandingPage());

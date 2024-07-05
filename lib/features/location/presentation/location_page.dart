@@ -2,6 +2,7 @@ import 'package:drugstore_demo/core/getit_config.dart';
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:drugstore_demo/core/utils/values/text_styles.dart';
+import 'package:drugstore_demo/features/branch/data/models/site.dart';
 import 'package:drugstore_demo/features/landing/presentation/cubit/landing_cubit.dart';
 import 'package:drugstore_demo/features/widgets/item_branch.dart';
 import 'package:drugstore_demo/features/widgets/map/presentation/map_widget.dart';
@@ -9,9 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationPage extends StatefulWidget {
-  const LocationPage({super.key, required this.title});
+  const LocationPage({super.key, required this.site});
 
-  final String title;
+  final Site site;
 
   @override
   State<LocationPage> createState() => _LocationPageState();
@@ -24,15 +25,15 @@ class _LocationPageState extends State<LocationPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          widget.title,
+          widget.site.siteDesc,
           style: TextStyleConstants.appBar,
         ),
       ),
       body: Stack(
         alignment: AlignmentDirectional.center,
         children: [
-          const MapWidget(
-            currentLocation: LatLng(13.789233,100.558942),
+         MapWidget(
+            currentLocation: LatLng(widget.site.location.coordinates.last, widget.site.location.coordinates.first),
             autoSetCurrentLocation: false,
             showMyCurrentButton: false,
           ),
@@ -47,6 +48,7 @@ class _LocationPageState extends State<LocationPage> {
             child: SizedBox(
                 width: MediaQuery.of(context).size.width - 16,
                 child: ItemBranch(
+                  site: widget.site,
                   iconPrimaryButton: SvgAsset.icMap,
                   iconOutLineButton: SvgAsset.icCall,
                   onPhoneCall: (value) {},
