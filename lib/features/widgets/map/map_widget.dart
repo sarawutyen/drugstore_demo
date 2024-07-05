@@ -10,7 +10,7 @@ class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
 
   @override
-  _MapWidgetState createState() => _MapWidgetState();
+  State<MapWidget> createState() => _MapWidgetState();
 }
 
 class _MapWidgetState extends State<MapWidget> {
@@ -20,7 +20,7 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _getCurrentPosition();
     });
   }
@@ -40,26 +40,32 @@ class _MapWidgetState extends State<MapWidget> {
                 _mapCubit.setMapController(mapController: googleMapController);
               },
             ),
-            Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      backgroundColor: ColorsConstant.greyF3F3F3,
-                    ),
-                    child: const Icon(
-                      Icons.gps_fixed,
-                      color: ColorsConstant.greyABBAB,
-                    ),
-                  ),
-                )),
+            _buildMyCurrentLocation(),
           ],
         );
       },
     );
+  }
+
+  Widget _buildMyCurrentLocation() {
+    return Align(
+        alignment: Alignment.bottomRight,
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 8),
+          child: ElevatedButton(
+            onPressed: () {
+              _getCurrentPosition();
+            },
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              backgroundColor: ColorsConstant.greyF3F3F3,
+            ),
+            child: const Icon(
+              Icons.gps_fixed,
+              color: ColorsConstant.greyABBAB,
+            ),
+          ),
+        ));
   }
 
   Future<void> _getCurrentPosition() async {

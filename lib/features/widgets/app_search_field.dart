@@ -1,9 +1,9 @@
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
+import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AppSearchField extends StatelessWidget {
-  
   const AppSearchField({super.key, this.onSubmitted, this.hintText});
 
   final Function(String)? onSubmitted;
@@ -11,7 +11,6 @@ class AppSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: _buildsSearchField(),
     );
@@ -19,7 +18,7 @@ class AppSearchField extends StatelessWidget {
 
   Widget _buildsSearchField() {
     return Container(
-      height: 40,
+      height: 45,
       margin: const EdgeInsets.only(
           top: 16.0, bottom: 16.0, left: 16.0, right: 16.0),
       child: TextField(
@@ -29,12 +28,15 @@ class AppSearchField extends StatelessWidget {
             filled: true,
             hintText: hintText,
             focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
+                borderRadius: BorderRadius.all(Radius.circular(23.0))),
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 0.0),
+              
+                borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            prefixIcon: SvgPicture.asset(SvgAsset.icSearch),
+            prefixIcon: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SvgPicture.asset(SvgAsset.icSearch)),
             contentPadding: const EdgeInsets.only(top: 8.0, right: 16.0)),
         controller: TextEditingController(),
         onSubmitted: onSubmitted,

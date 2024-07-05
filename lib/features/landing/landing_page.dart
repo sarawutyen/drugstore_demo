@@ -7,6 +7,7 @@ import 'package:drugstore_demo/features/widgets/app_primary_button.dart';
 import 'package:drugstore_demo/features/widgets/map/cubit/map_cubit.dart';
 import 'package:drugstore_demo/features/widgets/map/map_widget.dart';
 import 'package:drugstore_demo/features/widgets/app_search_field.dart';
+import 'package:drugstore_demo/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +16,7 @@ class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
   @override
-  _LandingPageState createState() => _LandingPageState();
+  State<LandingPage> createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
@@ -61,9 +62,14 @@ class _LandingPageState extends State<LandingPage> {
         const SizedBox(
           height: 16.0,
         ),
-        AppPrimaryButton(
-          text: 'ยืนยันตำแหน่ง',
-          onPressed: () {},
+        Container(
+          margin: const EdgeInsets.only(bottom: 16.0, left: 8.0, right: 8.0),
+          child: AppPrimaryButton(
+            text: 'ยืนยันตำแหน่ง',
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routes.branch);
+            },
+          ),
         )
       ],
     );

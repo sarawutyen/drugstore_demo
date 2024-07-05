@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -35,6 +33,7 @@ class MapCubit extends Cubit<MapState> {
     emit(state.copyWith(currentLocation: current));
 
     if (showMarker) {
+      clearMarker();
       setMarker(latLng: current);
     }
 
