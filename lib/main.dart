@@ -1,4 +1,5 @@
-import 'package:drugstore_demo/modules/splash/splash.dart';
+import 'package:drugstore_demo/core/utils/values/colors.dart';
+import 'package:drugstore_demo/features/landing/landing_page.dart';
 import 'package:drugstore_demo/routes/pages.dart';
 import 'package:flutter/material.dart';
 import 'core/getit_config.dart';
@@ -18,11 +19,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: ColorsConstant.primary,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       onGenerateRoute: AppPages.onGenerateRoute,
-      home: const Splash(),
+      home: const LandingPage(),
     );
   }
 }
