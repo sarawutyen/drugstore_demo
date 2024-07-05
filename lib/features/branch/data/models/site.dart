@@ -20,10 +20,13 @@ class Site {
   final Location location;
 
   @JsonKey(name: 'site_close_time')
-  final String siteCloseTime;
+  String siteCloseTime;
 
   @JsonKey(name: 'site_open_time')
-  final String siteOpenTime;
+  String siteOpenTime;
+
+  bool isOpen;
+  double distance;
 
   Site({
     required this.siteId,
@@ -33,6 +36,8 @@ class Site {
     required this.location,
     required this.siteCloseTime,
     required this.siteOpenTime,
+    this.isOpen = false,
+    this.distance = 0.0
   });
 
   factory Site.fromJson(Map<String, dynamic> json) => _$SiteFromJson(json);

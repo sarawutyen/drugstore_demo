@@ -80,28 +80,32 @@ class ItemBranch extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 3,
+            flex: 3,
             child: AppOutlineButton(
-          text: site.siteTel,
-          icon: iconOutLineButton,
-          textStyle: TextStyleConstants.textOutline10w500,
-          onPressed: () {
-            onPhoneCall?.call('aaaa');
-          },
-        )),
+              text: site.siteTel,
+              icon: iconOutLineButton,
+              textStyle: TextStyleConstants.textOutline10w500,
+              onPressed: site.isOpen
+                  ? () {
+                      onPhoneCall?.call(site.siteTel);
+                    }
+                  : null,
+            )),
         const SizedBox(
           width: 16.0,
         ),
         Expanded(
-          flex: 3,
+            flex: 3,
             child: AppPrimaryButton(
-          text: 'แผนที่สาขา',
-          icon: iconPrimaryButton,
-          textStyle: TextStyleConstants.textPrimary10w500,
-          onPressed: (){
-            onNavigateMap?.call(site);
-          },
-        )),
+              text: 'แผนที่สาขา',
+              icon: iconPrimaryButton,
+              textStyle: TextStyleConstants.textPrimary10w500,
+              onPressed: site.isOpen
+                  ? () {
+                      onNavigateMap?.call(site);
+                    }
+                  : null,
+            )),
       ],
     );
   }
@@ -150,22 +154,27 @@ class ItemBranch extends StatelessWidget {
                 style: TextStyleConstants.textStyle13w700,
               ),
               Text(
-                '2222',
+                '${site.distance.toStringAsFixed(2)} กม.',
                 style: TextStyleConstants.textStyle13w700,
               ),
               Row(
                 children: [
-                  Text(
-                    'ปิด',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
+                  if (!site.isOpen)
+                    const Text(
+                      'ปิด ',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
                   Text(
-                    '(${site.siteOpenTime}-${site.siteCloseTime})',
-                    style: TextStyleConstants.textStyle13w700,
+                    (!site.isOpen)
+                        ? '(เปิด ${site.siteOpenTime}-${site.siteCloseTime})'
+                        : '(${site.siteOpenTime}-${site.siteCloseTime})',
+                    style: (!site.isOpen)
+                        ? TextStyleConstants.textStyle13w400
+                        : TextStyleConstants.textStyle13w700,
                   ),
                 ],
               ),

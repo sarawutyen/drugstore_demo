@@ -1,13 +1,18 @@
-
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AppSearchField extends StatelessWidget {
-  const AppSearchField({super.key, this.onSubmitted, this.hintText, this.enabled = true});
+  const AppSearchField(
+      {super.key,
+      this.onSubmitted,
+      this.onChanged,
+      this.hintText,
+      this.enabled = true});
 
   final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
   final String? hintText;
   final bool enabled;
 
@@ -31,13 +36,16 @@ class AppSearchField extends StatelessWidget {
             filled: true,
             hintText: hintText,
             focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
+                borderSide:
+                    BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
                 borderRadius: BorderRadius.all(Radius.circular(23.0))),
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
+                borderSide:
+                    BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                disabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
+            disabledBorder: const OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: ColorsConstant.greyD3D2D2, width: 0.5),
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             prefixIcon: Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -45,6 +53,7 @@ class AppSearchField extends StatelessWidget {
             contentPadding: const EdgeInsets.only(top: 8.0, right: 16.0)),
         controller: TextEditingController(),
         onSubmitted: onSubmitted,
+        onChanged: onChanged,
       ),
     );
   }

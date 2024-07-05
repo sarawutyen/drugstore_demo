@@ -1,5 +1,5 @@
-import 'dart:html';
 
+import 'package:drugstore_demo/core/utils/utilities.dart';
 import 'package:drugstore_demo/core/utils/values/asset_paths.dart';
 import 'package:drugstore_demo/core/utils/values/text_styles.dart';
 import 'package:drugstore_demo/features/branch/data/models/site.dart';
@@ -43,7 +43,9 @@ class _BranchPageState extends State<BranchPage> {
         create: (context) => _branchCubit,
         child: Column(children: [
           AppSearchField(
-            onSubmitted: (value) {},
+            onChanged: (value) {
+              _branchCubit.searchSiteName(value);
+            },
             hintText: 'ค้นหาสาขา',
           ),
           Expanded(
@@ -62,12 +64,14 @@ class _BranchPageState extends State<BranchPage> {
                               siteTel: 'siteTel',
                               location: Location(
                                   type: 'type', coordinates: []),
-                              siteCloseTime: 'siteCloseTime',
-                              siteOpenTime: 'siteOpenTime')
+                              siteCloseTime: '00.00',
+                              siteOpenTime: '00.00')
                           : state.sites[index],
                       iconPrimaryButton: SvgAsset.icMap,
                       iconOutLineButton: SvgAsset.icCall,
-                      onPhoneCall: state.isLoading ? null : (value) {},
+                      onPhoneCall: state.isLoading ? null : (value) {
+                        launchPhone(value);
+                      },
                       onNavigateMap: state.isLoading
                           ? null
                           : (value) {

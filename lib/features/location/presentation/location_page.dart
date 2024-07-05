@@ -9,6 +9,8 @@ import 'package:drugstore_demo/features/widgets/map/presentation/map_widget.dart
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../core/utils/utilities.dart';
+
 class LocationPage extends StatefulWidget {
   const LocationPage({super.key, required this.site});
 
@@ -51,7 +53,9 @@ class _LocationPageState extends State<LocationPage> {
                   site: widget.site,
                   iconPrimaryButton: SvgAsset.icMap,
                   iconOutLineButton: SvgAsset.icCall,
-                  onPhoneCall: (value) {},
+                  onPhoneCall: (value) {
+                    launchPhone(value);
+                  },
                   onNavigateMap: (value) {},
                 )),
           )

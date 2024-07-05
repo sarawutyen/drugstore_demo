@@ -8,11 +8,23 @@ part 'branch_state.dart';
 class BranchCubit extends Cubit<BranchState> {
   BranchCubit() : super(BranchState(sites: []));
 
+  List<Site> _listOlder = <Site>[];
+
   void getSites() async {
     emit(state.copyWith(isLoading: true));
-    Future.delayed(const Duration(seconds: 1),() async {
+    Future.delayed(const Duration(microseconds: 500), () async {
       List<Site> sites = await getIt<BranchRepo>().getSites();
-    emit(state.copyWith(isLoading: false, sites: sites));
+      _listOlder = sites;
+      emit(state.copyWith(isLoading: false, sites: sites));
     });
+  }
+
+  void searchSiteName(String value){
+    if(value.isEmpty){
+      emit(state.copyWith(sites: _listOlder));
+    }else {
+      final listFiltered = _listOlder.where((element) => element.siteDesc.contains(value)).toList();
+      emit(state.copyWith(sites: listFiltered));
+    }
   }
 }
