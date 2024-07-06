@@ -75,7 +75,7 @@ class _LandingPageState extends State<LandingPage> {
           height: 16.0,
         ),
         Container(
-          margin: const EdgeInsets.only(bottom: 16.0, left: 8.0, right: 8.0),
+          margin: const EdgeInsets.only(bottom: 32.0, left: 8.0, right: 8.0),
           child: AppPrimaryButton(
             text: 'ยืนยันตำแหน่ง',
             onPressed: getIt<LandingCubit>().state.isLoading

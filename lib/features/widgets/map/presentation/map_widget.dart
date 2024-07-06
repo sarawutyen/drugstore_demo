@@ -57,6 +57,8 @@ class _MapWidgetState extends State<MapWidget> {
                         latLng: widget.currentLocation!, zoomLevel: 15);
                   }
                 },
+                myLocationButtonEnabled: false,
+                mapToolbarEnabled: false,
               ),
               if (widget.showMyCurrentButton) _buildMyCurrentLocation(),
             ],
