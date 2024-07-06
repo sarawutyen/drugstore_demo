@@ -22,12 +22,14 @@ Follow these steps to get the project up and running.
 2. **Set API_KEY for Map and API Service:**
 
 - Android: Update AndroidManifest.xml:
-<meta-data
-    android:name="com.google.android.geo.API_KEY"
-    android:value="Input API_KEY"/>
+
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="Input API_KEY"/>
 
 - iOS: Update AppDelegate.swift:
-GMSServices.provideAPIKey("Input API_KEY")
+    
+    GMSServices.provideAPIKey("Input API_KEY")
 
 3. **Run commands:**
 
