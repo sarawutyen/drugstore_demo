@@ -1,16 +1,47 @@
-# drugstore_demo
+# Drugstore Demo
 
-A new Flutter project.
+This project is a demo for a drugstore application.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Follow these steps to get the project up and running.
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter SDK: [Install Flutter](https://flutter.dev/docs/get-started/install)
+- Dart SDK (comes with Flutter)
+- Git: [Install Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Installation
+
+1. **Clone the project from GitHub:**
+
+   ```sh
+   git clone https://github.com/sarawutyen/drugstore_demo.git
+   cd drugstore_demo
+2. **Set API_KEY for Map and API Service:**
+
+- Android: Update AndroidManifest.xml:
+<meta-data
+    android:name="com.google.android.geo.API_KEY"
+    android:value="Input API_KEY"/>
+
+- iOS: Update AppDelegate.swift:
+GMSServices.provideAPIKey("Input API_KEY")
+
+3. **Run commands:**
+
+    flutter clean
+    flutter pub get
+
+4. **Connect your device or Simulator.**
+
+5. **Run command to build the app:**
+
+    flutter run
+
+### Additional Information
+For more details on Flutter and its ecosystem, visit the official Flutter documentation.
+
+
+
