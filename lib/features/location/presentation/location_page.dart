@@ -5,6 +5,7 @@ import 'package:drugstore_demo/core/utils/values/text_styles.dart';
 import 'package:drugstore_demo/features/branch/data/models/site.dart';
 import 'package:drugstore_demo/features/landing/presentation/cubit/landing_cubit.dart';
 import 'package:drugstore_demo/features/widgets/item_branch.dart';
+import 'package:drugstore_demo/features/widgets/map/presentation/cubit/map_cubit.dart';
 import 'package:drugstore_demo/features/widgets/map/presentation/map_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -35,6 +36,7 @@ class _LocationPageState extends State<LocationPage> {
         alignment: AlignmentDirectional.center,
         children: [
           MapWidget(
+            mapCubit: MapCubit(),
             currentLocation: LatLng(widget.site.location.coordinates.last,
                 widget.site.location.coordinates.first),
             autoSetCurrentLocation: false,

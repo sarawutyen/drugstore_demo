@@ -4,6 +4,7 @@ import 'package:drugstore_demo/core/utils/values/text_styles.dart';
 import 'package:drugstore_demo/core/getit_config.dart';
 import 'package:drugstore_demo/features/landing/presentation/cubit/landing_cubit.dart';
 import 'package:drugstore_demo/features/widgets/app_primary_button.dart';
+import 'package:drugstore_demo/features/widgets/map/presentation/cubit/map_cubit.dart';
 import 'package:drugstore_demo/features/widgets/map/presentation/map_widget.dart';
 import 'package:drugstore_demo/features/widgets/app_search_field.dart';
 import 'package:drugstore_demo/routes/pages.dart';
@@ -20,6 +21,8 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  final MapCubit _mapCubit = MapCubit();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,23 +36,29 @@ class _LandingPageState extends State<LandingPage> {
       ),
       body: BlocProvider(
         create: (context) => getIt<LandingCubit>(),
-        child: Stack(
-          children: [
-            const MapWidget(
-              showMyCurrentButton: true,
-            ),
-            BlocBuilder<LandingCubit, LandingState>(
-              builder: (context, state) {
-                return AppSearchField(
+        child: BlocBuilder<LandingCubit, LandingState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                MapWidget(
+                  mapCubit: _mapCubit,
+                  showMyCurrentButton: true,
+                  currentLocation: state.currentLocation,
+                ),
+                AppSearchField(
                   enabled: !state.isLoading,
-                  onSubmitted: (value) {
-                    getIt<LandingCubit>().findLocation(value: value);
+                  onSubmitted: (value) async {
+                    await getIt<LandingCubit>().findLocation(value: value);
+                    _mapCubit.updateCurrentLocation(
+                        getIt<LandingCubit>().state.currentLocation,
+                        autoZoom: true,
+                        showMarker: true);
                   },
                   hintText: 'ค้นหาที่อยู่จัดส่งสินค้า',
-                );
-              },
-            ),
-          ],
+                )
+              ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: BlocProvider(

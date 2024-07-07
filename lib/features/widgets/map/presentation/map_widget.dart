@@ -10,12 +10,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapWidget extends StatefulWidget {
   const MapWidget(
       {super.key,
+      required this.mapCubit,
       required this.showMyCurrentButton,
       this.currentLocation,
       this.autoSetCurrentLocation = true});
   final bool showMyCurrentButton;
   final bool autoSetCurrentLocation;
   final LatLng? currentLocation;
+  final  MapCubit mapCubit;
 
   @override
   State<MapWidget> createState() => _MapWidgetState();
@@ -23,7 +25,6 @@ class MapWidget extends StatefulWidget {
 
 class _MapWidgetState extends State<MapWidget> {
   final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
-  final MapCubit _mapCubit = MapCubit();
 
   @override
   void initState() {
@@ -38,7 +39,7 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _mapCubit,
+      create: (context) => widget.mapCubit,
       child: BlocBuilder<MapCubit, MapState>(
         builder: (context, state) {
           return Stack(
@@ -49,11 +50,11 @@ class _MapWidgetState extends State<MapWidget> {
                 markers: state.markers ?? {},
                 zoomControlsEnabled: false,
                 onMapCreated: (GoogleMapController googleMapController) {
-                  _mapCubit.setMapController(
+                  widget.mapCubit.setMapController(
                       mapController: googleMapController);
                   if (widget.currentLocation != null) {
-                    _mapCubit.setMarker(latLng: widget.currentLocation!);
-                    _mapCubit.zoomTo(
+                    widget.mapCubit.setMarker(latLng: widget.currentLocation!);
+                    widget.mapCubit.zoomTo(
                         latLng: widget.currentLocation!, zoomLevel: 15);
                   }
                 },
@@ -94,7 +95,7 @@ class _MapWidgetState extends State<MapWidget> {
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {
-      _mapCubit.updateCurrentLocation(
+      widget.mapCubit.updateCurrentLocation(
         LatLng(
           position.latitude,
           position.longitude,
